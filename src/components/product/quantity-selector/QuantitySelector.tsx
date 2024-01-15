@@ -11,7 +11,7 @@ export const QuantitySelector = ({ quantity }: Props) => {
 
   const onQuantityChanged = (value: number) => {
     if (count + value < 1) return;
-    if (count + value > 5) return;
+    //if (count + value > 5) return;
     setCount(count + value);
   };
 
