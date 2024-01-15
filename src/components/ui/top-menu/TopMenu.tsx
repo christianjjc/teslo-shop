@@ -1,5 +1,5 @@
 "use client";
-import { tittleFont } from "@/config/fonts";
+import { titleFont } from "@/config/fonts";
 import { useUIStore } from "@/store";
 import Link from "next/link";
 import React from "react";
@@ -12,7 +12,7 @@ export const TopMenu = () => {
     <nav className="flex px-5 justify-between items-center w-full">
       <div>
         <Link href="/">
-          <span className={`${tittleFont.className} antialiased font-bold`}>Teslo</span>
+          <span className={`${titleFont.className} antialiased font-bold`}>Teslo</span>
           <span> | Shop</span>
         </Link>
       </div>
