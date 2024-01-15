@@ -3,7 +3,12 @@ import { initialData } from "./seed";
 
 async function main() {
   // 1. Borrar REGISTROS PREVIOS
-  await Promise.all([prisma.productImage.deleteMany(), prisma.product.deleteMany(), prisma.category.deleteMany()]);
+  //await Promise.all([prisma.productImage.deleteMany(), prisma.product.deleteMany(), prisma.category.deleteMany()]);
+
+  await prisma.productImage.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.category.deleteMany();
+
   // 2. Categorías
   const { categories, products } = initialData;
   const categoriesData = categories.map((cat) => ({
