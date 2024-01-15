@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Development
 
-## Getting Started
+## Repositorio
 
-First, run the development server:
+### 1. Clonar el repositorio:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 2. Instalar las dependencias de la app:
+
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Pasos para levantar la app en desarrollo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Levantar la base de datos:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+#### 3.1 Iniciar Docker y verificar que esté corriendo
 
-## Learn More
+#### 3.2 Archivo .env:
 
-To learn more about Next.js, take a look at the following resources:
+- Renombrar el archivo **".env.template"** como **".env"**
+- Reemplazar las variables de entorno
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### 3.3 ejecutar el comando para crear el contenedor
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+docker compose up -d
+```
 
-## Deploy on Vercel
+### 4. Iniciar la aplicación:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### 5. Ejecutar los Prisma Commands:
+
+```
+npx prisma init
+npx prisma migrate dev
+npx prisma generate
+```
+
+### 6.1 Si cambias algo en el Schema postgres (desde el la bd misma y no aquí)... haz un:
+
+```
+npx prisma db pull
+```
+
+### 7. Apuntar al EndPoint para [llenar BD con data de ejemplo](http://localhost:3000/api/seed):
+
+```
+http://localhost:3000/api/seed
+```
+
+### 8. Ingresa a la app [http://localhost:3000/dashboard](http://localhost:3000/dashboard):
+
+```
+http://localhost:3000/dashboard
+```
+
+### 9. Usuario por defecto:
+
+- **user:** test@emailtest.com
+- **password:** 123456
