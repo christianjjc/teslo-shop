@@ -37,7 +37,7 @@ export const AddToCart = ({ product }: Props) => {
 
   return (
     <>
-      {posted && !size && <span className="mt-2 text-red-500">Debe de seleccionar una talla</span>}
+      {posted && !size && <span className="fade-in mt-2 text-red-500">Debe de seleccionar una talla</span>}
 
       {/* Selector de Tallas */}
       <SizeSelector selectedSize={size} availableSizes={product.sizes} onSizeChanged={setSize} />

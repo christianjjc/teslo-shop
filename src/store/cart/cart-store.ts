@@ -7,10 +7,17 @@ interface State {
 
   getTotalItems: () => number;
 
+  getSumaryInformation: () => {
+    subTotal: number;
+    tax: number;
+    total: number;
+    itemsInCart: number;
+  };
+
   addProductToCart: (product: CartProduct) => void;
 
-  //updateProductQuantity
-  //removeProduct
+  updateProductsQuantity: (product: CartProduct, quantity: number) => void;
+  removeProductOfCart: (product: CartProduct) => void;
 }
 
 export const useCartStore = create<State>()(
@@ -22,6 +29,20 @@ export const useCartStore = create<State>()(
       getTotalItems: () => {
         const { cart } = get();
         return cart.reduce((acum, item) => acum + item.quantity, 0);
+      },
+
+      getSumaryInformation: () => {
+        const { cart } = get();
+        const subTotal = cart.reduce((acum, item) => acum + item.quantity * item.price, 0);
+        const tax = subTotal * 0.15;
+        const total = subTotal + tax;
+        const itemsInCart = cart.reduce((acum, item) => acum + item.quantity, 0);
+        return {
+          subTotal,
+          tax,
+          total,
+          itemsInCart,
+        };
       },
 
       addProductToCart: (product: CartProduct) => {
@@ -37,7 +58,28 @@ export const useCartStore = create<State>()(
           }
           return item;
         });
+        set({ cart: updatedCartInProduct });
+      },
 
+      updateProductsQuantity: (product: CartProduct, quantity: number) => {
+        //console.log({ product, quantity });
+        const { cart } = get();
+        const updatedCartInProduct = cart.map((item) => {
+          if (item.id === product.id && item.size === product.size) {
+            return { ...item, quantity: quantity };
+          }
+          return item;
+        });
+        set({ cart: updatedCartInProduct });
+        //const quantityNew = cart.filter((el) => el.id === product.id && el.size === product.size).reduce((acum, item) => acum + item.quantity, 0);
+        //return quantity + quantityNew;
+      },
+
+      removeProductOfCart: (product: CartProduct) => {
+        const { cart } = get();
+        //console.log({ product });
+        const updatedCartInProduct = cart.filter((item) => !(item.id === product.id && item.size === product.size));
+        //console.log({ updatedCartInProduct });
         set({ cart: updatedCartInProduct });
       },
     }),

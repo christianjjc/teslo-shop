@@ -1,5 +1,6 @@
 import { Title } from "@/components";
 import { initialData } from "@/seed/seed";
+import { currencyFormat } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -31,8 +32,8 @@ export default function CheckoutPage() {
                 />
                 <div>
                   <p>{prod.title}</p>
-                  <p>{prod.price} x 3</p>
-                  <p className="font-bold">Subtotal: ${prod.price * 3}</p>
+                  <p>{currencyFormat(prod.price)} x 3</p>
+                  <p className="font-bold">Subtotal: {currencyFormat(prod.price * 3)}</p>
                 </div>
               </div>
             ))}
@@ -58,11 +59,11 @@ export default function CheckoutPage() {
               <span>No. Productos</span>
               <span className="text-right">3 artículos</span>
               <span>Subtotal</span>
-              <span className="text-right">$ 100</span>
+              <span className="text-right">{currencyFormat(100)}</span>
               <span>Impuestos (15%):</span>
-              <span className="text-right">$ 100</span>
+              <span className="text-right">{currencyFormat(100)}</span>
               <span className="mt-5 text-2xl">Total:</span>
-              <span className="mt-5 text-2xl text-right">$ 100</span>
+              <span className="mt-5 text-2xl text-right">{currencyFormat(100)}</span>
             </div>
             <div className="mt-5 mb-2 w-full">
               <p className="mb-5">
