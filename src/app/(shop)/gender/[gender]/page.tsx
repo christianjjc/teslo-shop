@@ -14,9 +14,7 @@ interface Props {
 
 export default async function ({ params, searchParams }: Props) {
   const { gender } = params;
-
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
-
   const { products, currentPage, totalPages } = await getPaginatedProductsWithImages({
     page,
     gender: gender as Gender,
