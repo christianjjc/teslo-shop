@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 
 const productInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];
 
-export default function () {
+export default function CartPage() {
   if (!productInCart) {
     redirect("/empty");
   }

@@ -11,7 +11,7 @@ interface Props {
 
 const productInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];
 
-export default function ({ params }: Props) {
+export default function OrderPage({ params }: Props) {
   const { id } = params;
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
