@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
 import { IoCartOutline } from "react-icons/io5";
+import { currencyFormat } from "@/utils";
 
 interface Props {
   params: { id: string };
@@ -11,7 +12,7 @@ interface Props {
 
 const productInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];
 
-export default function ({ params }: Props) {
+export default function OrderPage({ params }: Props) {
   const { id } = params;
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
@@ -44,8 +45,8 @@ export default function ({ params }: Props) {
                 />
                 <div>
                   <p>{prod.title}</p>
-                  <p>{prod.price} x 3</p>
-                  <p className="font-bold">Subtotal: ${prod.price * 3}</p>
+                  <p>{currencyFormat(prod.price)} x 3</p>
+                  <p className="font-bold">Subtotal: {currencyFormat(prod.price * 3)}</p>
                 </div>
               </div>
             ))}
@@ -71,11 +72,11 @@ export default function ({ params }: Props) {
               <span>No. Productos</span>
               <span className="text-right">3 artículos</span>
               <span>Subtotal</span>
-              <span className="text-right">$ 100</span>
+              <span className="text-right">{currencyFormat(100)}</span>
               <span>Impuestos (15%):</span>
-              <span className="text-right">$ 100</span>
+              <span className="text-right">{currencyFormat(100)}</span>
               <span className="mt-5 text-2xl">Total:</span>
-              <span className="mt-5 text-2xl text-right">$ 100</span>
+              <span className="mt-5 text-2xl text-right">{currencyFormat(100)}</span>
             </div>
             <div className="mt-5 mb-2 w-full">
               <div

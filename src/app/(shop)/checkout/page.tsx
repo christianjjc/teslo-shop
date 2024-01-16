@@ -1,11 +1,12 @@
 import { Title } from "@/components";
 import { initialData } from "@/seed/seed";
+import { currencyFormat } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 
 const productInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];
 
-export default function () {
+export default function CheckoutPage() {
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
       <div className="flex flex-col w-[1000px]">
@@ -31,8 +32,8 @@ export default function () {
                 />
                 <div>
                   <p>{prod.title}</p>
-                  <p>{prod.price} x 3</p>
-                  <p className="font-bold">Subtotal: ${prod.price * 3}</p>
+                  <p>{currencyFormat(prod.price)} x 3</p>
+                  <p className="font-bold">Subtotal: {currencyFormat(prod.price * 3)}</p>
                 </div>
               </div>
             ))}
@@ -58,16 +59,16 @@ export default function () {
               <span>No. Productos</span>
               <span className="text-right">3 artículos</span>
               <span>Subtotal</span>
-              <span className="text-right">$ 100</span>
+              <span className="text-right">{currencyFormat(100)}</span>
               <span>Impuestos (15%):</span>
-              <span className="text-right">$ 100</span>
+              <span className="text-right">{currencyFormat(100)}</span>
               <span className="mt-5 text-2xl">Total:</span>
-              <span className="mt-5 text-2xl text-right">$ 100</span>
+              <span className="mt-5 text-2xl text-right">{currencyFormat(100)}</span>
             </div>
             <div className="mt-5 mb-2 w-full">
               <p className="mb-5">
                 <span className="text-xs">
-                  Al hacer clic en "Confirmar compra", aceptas nuestros{" "}
+                  Al hacer clic en &quot;Confirmar compra&quot;, aceptas nuestros&nbsp;
                   <a href="#" className="underline">
                     términos y condiciones
                   </a>{" "}
