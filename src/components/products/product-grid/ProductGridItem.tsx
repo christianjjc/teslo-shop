@@ -1,6 +1,7 @@
 "use client";
 
 import { Product } from "@/interfaces";
+import { currencyFormat } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,20 +17,20 @@ export const ProductGridItem = ({ product }: Props) => {
     <div className="rounded-md overflow-hidden fade-in">
       <Link href={`/product/${product.slug}`}>
         <Image
-          onMouseEnter={() => setDisplayImage(product.images[1])}
-          onMouseLeave={() => setDisplayImage(product.images[0])}
           src={`/products/${displayImage}`}
           alt={product.title}
           className="w-full object-cover rounded"
           width={500}
           height={500}
+          onMouseEnter={() => setDisplayImage(product.images[1])}
+          onMouseLeave={() => setDisplayImage(product.images[0])}
         />
       </Link>
       <div className="p-4 flex flex-col">
         <Link className="hover:text-blue-600" href={`/product/${product.slug}`}>
           {product.title}
         </Link>
-        <span className="font-bold">$ {product.price}</span>
+        <span className="font-bold">{currencyFormat(product.price)}</span>
       </div>
     </div>
   );
