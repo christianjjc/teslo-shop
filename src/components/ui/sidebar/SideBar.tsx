@@ -24,6 +24,8 @@ export const SideBar = () => {
 
   const isAuthenticated = !!session?.user;
 
+  const isAdmin = session?.user.role === "admin";
+
   //console.log({ session });
 
   return (
@@ -48,14 +50,19 @@ export const SideBar = () => {
             className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500"
           />
         </div>
-        <Link onClick={closeMenu} href="/profile" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
-          <IoPersonOutline size={30} />
-          <span className="ml-3 text-xl">Perfil</span>
-        </Link>
-        <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
-          <IoTicketOutline size={30} />
-          <span className="ml-3 text-xl">Ordenes</span>
-        </Link>
+
+        {isAuthenticated && (
+          <>
+            <Link onClick={closeMenu} href="/profile" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+              <IoPersonOutline size={30} />
+              <span className="ml-3 text-xl">Perfil</span>
+            </Link>
+            <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+              <IoTicketOutline size={30} />
+              <span className="ml-3 text-xl">Ordenes</span>
+            </Link>
+          </>
+        )}
 
         {!isAuthenticated && (
           <Link onClick={closeMenu} href="/auth/login" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
@@ -70,19 +77,23 @@ export const SideBar = () => {
           </button>
         )}
 
-        <div className="w-full h-px bg-gray-200 my-10" />
-        <Link onClick={closeMenu} href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
-          <IoShirtOutline size={30} />
-          <span className="ml-3 text-xl">Productos</span>
-        </Link>
-        <Link onClick={closeMenu} href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
-          <IoTicketOutline size={30} />
-          <span className="ml-3 text-xl">Ordenes</span>
-        </Link>
-        <Link onClick={closeMenu} href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
-          <IoPeopleOutline size={30} />
-          <span className="ml-3 text-xl">Usuarios</span>
-        </Link>
+        {isAdmin && (
+          <>
+            <div className="w-full h-px bg-gray-200 my-10" />
+            <Link onClick={closeMenu} href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+              <IoShirtOutline size={30} />
+              <span className="ml-3 text-xl">Productos</span>
+            </Link>
+            <Link onClick={closeMenu} href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+              <IoTicketOutline size={30} />
+              <span className="ml-3 text-xl">Ordenes</span>
+            </Link>
+            <Link onClick={closeMenu} href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+              <IoPeopleOutline size={30} />
+              <span className="ml-3 text-xl">Usuarios</span>
+            </Link>
+          </>
+        )}
       </nav>
     </div>
   );

@@ -13,7 +13,9 @@ export const LoginForm = () => {
   const [state, dispatch] = useFormState(authenticate, undefined);
   useEffect(() => {
     if (state === "Success") {
-      router.refresh();
+      //router.refresh();
+      //router.replace("/");
+      window.location.replace("/");
     }
   }, [state]);
   return (

@@ -3,12 +3,32 @@ import credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import bcryptjs from "bcryptjs";
+import { JWT } from "next-auth/jwt";
+
+let userToken: any;
 
 export const authConfig: NextAuthConfig = {
   pages: {
     signIn: "/auth/login",
     newUser: "/auth/new-account",
   },
+
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.data = user;
+      }
+      userToken = token.data;
+      //console.log({ userToken });
+      return token;
+    },
+    session({ session, trigger, newSession }) {
+      session.user = userToken;
+      //console.log({ session, trigger, newSession });
+      return session;
+    },
+  },
+
   providers: [
     credentials({
       async authorize(credentials) {
