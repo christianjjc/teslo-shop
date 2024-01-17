@@ -5,6 +5,8 @@ export * from "./ui/sidebar/SideBar";
 export * from "./ui/footer/Footer";
 export * from "./ui/pagination/Pagination";
 
+export * from "./provider/Provider";
+
 export * from "./products/product-grid/ProductGrid";
 export * from "./products/product-grid/ProductGridItem";
 export * from "./product/size-selector/SizeSelector";

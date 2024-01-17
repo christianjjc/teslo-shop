@@ -21,7 +21,7 @@ export const Pagination = ({ totalPages }: Props) => {
     redirect(pathname);
   }
 
-  console.log({ currentPage });
+  //console.log({ currentPage });
 
   const allPages = generatePaginationNumbers(currentPage, totalPages);
 
