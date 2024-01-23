@@ -27,13 +27,7 @@ npm install
 docker compose up -d
 ```
 
-### 5. Iniciar la aplicación:
-
-```
-npm run dev
-```
-
-### 6. Ejecutar los Prisma Commands:
+### 4. Ejecutar los Prisma Commands:
 
 ```
 npx prisma init
@@ -41,31 +35,18 @@ npx prisma migrate dev
 npx prisma generate
 ```
 
-### 7. Iniciar con el SEED:
+### 5. Inicializar la BD con data de ejemplo:
 
 ```
 npm run seed
 ```
 
-### OPCIONAL!!! 7.1 Si cambias algo en el Schema postgres (desde el la bd misma y no aquí)... haz un:
+### 6. Debes limpiar el LocalStorage del navegador.
+
+### 7. Iniciar la aplicación:
 
 ```
-npx prisma db pull
+npm run dev
 ```
 
-### 8. Apuntar al EndPoint para [llenar BD con data de ejemplo](http://localhost:3000/api/seed):
-
-```
-http://localhost:3000/api/seed
-```
-
-### 9. Ingresa a la app [http://localhost:3000/dashboard](http://localhost:3000/dashboard):
-
-```
-http://localhost:3000/dashboard
-```
-
-### 10. Usuario por defecto:
-
-- **user:** test@emailtest.com
-- **password:** 123456
+### 8. Ingresa a la app [http://localhost:3000/](http://localhost:3000/):
