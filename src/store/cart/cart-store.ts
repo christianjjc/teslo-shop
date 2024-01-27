@@ -4,20 +4,18 @@ import { persist } from "zustand/middleware";
 
 interface State {
   cart: CartProduct[];
-
   getTotalItems: () => number;
-
   getSumaryInformation: () => {
     subTotal: number;
     tax: number;
     total: number;
     itemsInCart: number;
   };
-
   addProductToCart: (product: CartProduct) => void;
-
   updateProductsQuantity: (product: CartProduct, quantity: number) => void;
   removeProductOfCart: (product: CartProduct) => void;
+
+  clearCart: () => void;
 }
 
 export const useCartStore = create<State>()(
@@ -82,6 +80,10 @@ export const useCartStore = create<State>()(
         //console.log({ updatedCartInProduct });
         set({ cart: updatedCartInProduct });
       },
+
+      clearCart:()=>{
+        set({ cart: [] });
+      }
     }),
     {
       name: "shopping-cart",

@@ -2,16 +2,24 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+
 import { useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
+import { useRouter } from "next/navigation";
 
 export const ProductsInCart = () => {
+  /*   const router = useRouter();
+  const totalItemsInCart = useCartStore((state) => state.getTotalItems());
+  if (totalItemsInCart === 0) {
+    router.push("/empty");
+  } */
+
   const productsInCart = useCartStore((state) => state.cart);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
-    console.log(loaded);
+    //console.log(loaded);
   }, []);
 
   if (!loaded) {
