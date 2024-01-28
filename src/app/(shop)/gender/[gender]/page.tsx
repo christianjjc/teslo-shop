@@ -32,10 +32,10 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   return {
     title: "Articulos para " + labels[gender],
     description: "Todos los que necesitas para " + labels[gender],
-    openGraph: {
+    /* openGraph: {
       title: "Articulos para " + labels[gender],
       description: "Todo lo que necesitas para " + labels[gender],
-    },
+    }, */
   };
 }
 
