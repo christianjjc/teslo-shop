@@ -25,11 +25,11 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   return {
     title: product?.title ?? "Producto no encontrado",
     description: product?.description ?? "",
-    openGraph: {
+    /* openGraph: {
       title: product?.title ?? "Producto no encontrado",
       description: product?.description ?? "",
       images: [`products/${product?.images[1]}`],
-    },
+    }, */
   };
 }
 

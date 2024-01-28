@@ -2,15 +2,11 @@ import Link from "next/link";
 import { Title } from "@/components";
 import { ProductsInCart } from "./ui/ProductsInCart";
 import { OrderSumary } from "./ui/OrderSumary";
+import { CheckoutButton } from "./ui/CheckoutButton";
 
 //const productInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];
 
 export default function CartPage() {
-  //const productInCart = useCartStore((state) => state.getTotalItems);
-  /* if (!productInCart) {
-    redirect("/empty");
-  }
- */
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
       <div className="flex flex-col w-[1000px]">
@@ -32,11 +28,7 @@ export default function CartPage() {
 
             <OrderSumary />
 
-            <div className="mt-5 mb-2 w-full">
-              <Link href="/checkout/address" className="flex btn-primary justify-center">
-                Checkout
-              </Link>
-            </div>
+            <CheckoutButton />
           </div>
         </div>
       </div>
