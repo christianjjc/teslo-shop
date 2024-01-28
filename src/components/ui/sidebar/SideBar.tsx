@@ -1,16 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  IoCloseOutline,
-  IoLogInOutline,
-  IoLogOutOutline,
-  IoPeopleOutline,
-  IoPersonOutline,
-  IoSearchOutline,
-  IoShirtOutline,
-  IoTicketOutline,
-} from "react-icons/io5";
+import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearchOutline, IoShirtOutline, IoTicketOutline } from "react-icons/io5";
 import { useUIStore } from "@/store";
 import clsx from "clsx";
 import { logout } from "@/actions";
@@ -44,11 +35,7 @@ export const SideBar = () => {
         <IoCloseOutline size={50} className="absolute top-5 right-5 cursor-pointer" onClick={closeMenu} />
         <div className="relative mt-14">
           <IoSearchOutline size={20} className="absolute top-2 left-2" />
-          <input
-            type="text"
-            placeholder="Buscar"
-            className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500"
-          />
+          <input type="text" placeholder="Buscar" className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500" />
         </div>
 
         {isAuthenticated && (
@@ -57,7 +44,7 @@ export const SideBar = () => {
               <IoPersonOutline size={30} />
               <span className="ml-3 text-xl">Perfil</span>
             </Link>
-            <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+            <Link onClick={closeMenu} href="/orders" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
               <IoTicketOutline size={30} />
               <span className="ml-3 text-xl">Ordenes</span>
             </Link>
