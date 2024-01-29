@@ -1,26 +1,29 @@
-import { Title } from "@/components";
-import { initialData } from "@/seed/seed";
 import Image from "next/image";
-import Link from "next/link";
-import clsx from "clsx";
-import { IoCartOutline } from "react-icons/io5";
+import { redirect } from "next/navigation";
+
+import { PaypalButton, Title } from "@/components";
 import { currencyFormat } from "@/utils";
 import { getOrderById } from "@/actions";
-import { redirect } from "next/navigation";
+import { IsPaidFlag } from "../ui/ispaid-flag/IsPaidFlag";
+
+//import { initialData } from "@/seed/seed";
+//import Link from "next/link";
+//import clsx from "clsx";
+//import { IoCartOutline } from "react-icons/io5";
 
 interface Props {
   params: { id: string };
 }
 
-const productInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];
+//const productInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];
 
 export default async function OrderPage({ params }: Props) {
   const { id } = params;
 
   const { ok, order } = await getOrderById(id);
-  console.log(JSON.stringify(order));
-  console.log({ order });
-  console.log(order!.OrderItem);
+  //console.log(JSON.stringify(order));
+  //console.log({ order });
+  //console.log(order!.OrderItem);
 
   if (!ok) {
     redirect("/");
@@ -37,19 +40,11 @@ export default async function OrderPage({ params }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
           {/* Carrito */}
           <div className="flex flex-col mt-5">
-            <div
-              className={clsx("flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5", {
-                "bg-red-500": !order!.isPaid,
-                "bg-green-700": order!.isPaid,
-              })}>
-              <IoCartOutline size={30} />
-              {/* <span className="mx-2">Pendiente de pago</span> */}
-              <span className="mx-2">{order!.isPaid ? "Pagada" : "Pendiendte"}</span>
-            </div>
+            <IsPaidFlag isPaid={order!.isPaid} />
 
             {/* Items */}
-            {order?.OrderItem.map((item) => (
-              <div key={item.product.slug} className="flex mb-5">
+            {order?.OrderItem.map((item, i) => (
+              <div key={item.product.slug + i++} className="flex mb-5">
                 <Image width={100} height={100} src={`/products/${item.product.ProductImage[0].url}`} alt={item.product.title} className="mr-5 rounded" style={{ width: "100px", height: "100px" }} />
                 <div>
                   <p>{item.product.title}</p>
@@ -89,19 +84,7 @@ export default async function OrderPage({ params }: Props) {
               <span className="mt-5 text-2xl">Total:</span>
               <span className="mt-5 text-2xl text-right">{currencyFormat(order!.total)}</span>
             </div>
-            <div className="mt-5 mb-2 w-full">
-              <div
-                className={clsx("flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5", {
-                  "bg-red-500": !order!.isPaid,
-                  "bg-green-700": order!.isPaid,
-                })}>
-                <IoCartOutline size={30} />
-                {/* <span className="mx-2">Pendiente de pago</span> */}
-                <span className="mx-2">
-                  <span className="mx-2">{order!.isPaid ? "Pagada" : "Pendiendte"}</span>
-                </span>
-              </div>
-            </div>
+            <div className="mt-5 mb-2 w-full">{order!.isPaid ? <IsPaidFlag isPaid={order!.isPaid} /> : <PaypalButton orderId={order!.id} amount={order!.total} />}</div>
           </div>
         </div>
       </div>
