@@ -14,5 +14,6 @@ export * from "./product/quantity-selector/QuantitySelector";
 export * from "./product/slideshow/ProductSlideShow";
 export * from "./product/slideshow/ProductSlideShowMobile";
 export * from "./product/stock-label/StockLabel";
+export * from "./product/product-image/ProductImage";
 
 export * from "./paypal/PaypalButton";
