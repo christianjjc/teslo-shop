@@ -1,13 +1,15 @@
 "use client";
 
-import { Category, Product, ProductImage } from "@/interfaces";
+import { Category, Product, ProductImage as ProductWithImage } from "@/interfaces";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import clsx from "clsx";
-import { createUpdateProduct } from "@/actions";
+import { createUpdateProduct, deleteProductImage } from "@/actions";
+import { useRouter } from "next/navigation";
+import { ProductImage } from "@/components";
 
 interface Props {
-  product: Partial<Product> & { ProductImage?: ProductImage[] };
+  product: Partial<Product> & { ProductImage?: ProductWithImage[] };
   categories: Category[];
 }
 
@@ -23,9 +25,15 @@ interface FormInputs {
   tags: string; //camisa, t-shirt,
   gender: "men" | "women" | "kid" | "unisex";
   categoryId: string;
+
+  //Todo: images
+
+  images?: FileList;
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
+  const router = useRouter();
+
   const {
     handleSubmit,
     register,
@@ -38,6 +46,8 @@ export const ProductForm = ({ product, categories }: Props) => {
       ...product,
       tags: product.tags?.join(", "),
       sizes: product.sizes ?? [],
+
+      images: undefined,
     },
   });
 
@@ -45,7 +55,7 @@ export const ProductForm = ({ product, categories }: Props) => {
 
   const onSubmit = async (data: FormInputs) => {
     console.log({ data });
-    const { ...productToSave } = data;
+    const { images, ...productToSave } = data;
     const formData = new FormData(); //*crea un objetoformulario de javascript
     if (product.id) {
       formData.append("id", product.id ?? "");
@@ -59,9 +69,23 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append("tags", productToSave.tags);
     formData.append("categoryId", productToSave.categoryId);
     formData.append("gender", productToSave.gender);
+
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append("images", images[i]);
+      }
+    }
+
     console.log({ formData });
-    const { ok } = await createUpdateProduct(formData);
+    const { ok, product: updatedProduct } = await createUpdateProduct(formData);
     console.log(ok);
+
+    if (!ok) {
+      alert("El producto no se pudo actualizar");
+      return;
+    }
+
+    router.replace(`/admin/product/${updatedProduct?.slug}`);
   };
 
   const onSizeChange = async (size: string) => {
@@ -151,13 +175,13 @@ export const ProductForm = ({ product, categories }: Props) => {
 
           <div className="flex flex-col mb-2">
             <span>Fotos</span>
-            <input type="file" multiple className="p-2 border rounded-md bg-gray-200" accept="image/png, image/jpeg" />
+            <input type="file" {...register("images")} multiple className="p-2 border rounded-md bg-gray-200" accept="image/png, image/jpeg, image/avif" />
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
               {product.ProductImage?.map((img) => (
                 <div key={img.id} className="">
-                  <Image alt={product.title ?? ""} src={`/products/${img.url}`} height={300} width={300} className="rounded-t shadow-md"></Image>
-                  <button onClick={() => console.log(img.id, img.url)} type="button" className="btn-delete w-full">
+                  <ProductImage alt={product.title ?? ""} src={img.url} height={300} width={300} className="rounded-t shadow-md" />
+                  <button onClick={() => deleteProductImage(img.id, img.url)} type="button" className="btn-delete w-full">
                     Eliminar
                   </button>
                 </div>

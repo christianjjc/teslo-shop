@@ -1,9 +1,11 @@
 "use server";
 
-import { z } from "zod";
-
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { Gender, Product, Size } from "@prisma/client";
+import { z } from "zod";
+import { v2 as cloudinary } from "cloudinary";
+cloudinary.config(process.env.CLOUDINARY_URL ?? "");
 
 const productSquema = z.object({
   id: z.string().uuid().optional().nullable(),
@@ -38,43 +40,89 @@ export const createUpdateProduct = async (formData: FormData) => {
   const product = productParsed.data;
   product.slug = product.slug.toLocaleLowerCase().replace(/ /g, "-").trim();
   const { id, ...rest } = product;
-  const prismaTx = await prisma.$transaction(async (tx) => {
-    let product: Product;
-    const tagsArray = rest.tags.split(",").map((tag) => tag.trim().toLowerCase());
-    if (id) {
-      //* Actualizar
-      product = await prisma.product.update({
-        where: { id },
-        data: {
-          ...rest,
-          sizes: {
-            set: rest.sizes as Size[],
+  try {
+    const prismaTx = await prisma.$transaction(async (tx) => {
+      let product: Product;
+      const tagsArray = rest.tags.split(",").map((tag) => tag.trim().toLowerCase());
+
+      if (id) {
+        //* Actualizar
+        product = await prisma.product.update({
+          where: { id },
+          data: {
+            ...rest,
+            sizes: {
+              set: rest.sizes as Size[],
+            },
+            tags: tagsArray,
           },
-          tags: tagsArray,
-        },
-      });
-      console.log({ updatedProduct: product });
-    } else {
-      //* Crear Nuevo
-      product = await prisma.product.create({
-        data: {
-          ...rest,
-          sizes: {
-            set: rest.sizes as Size[],
+        });
+        console.log({ updatedProduct: product });
+      } else {
+        //* Crear Nuevo
+        product = await prisma.product.create({
+          data: {
+            ...rest,
+            sizes: {
+              set: rest.sizes as Size[],
+            },
+            tags: tagsArray,
           },
-          tags: tagsArray,
-        },
-      });
-    }
+        });
+      }
 
-    console.log({ newProduct: product });
+      //* Proceso de carga y guardado de imagenes
+      //* Recorrer las imagenes y guardarlas
+      if (formData.getAll("images")) {
+        // https://url.com/nombreimagen1.jpg
+        // https://url.com/nombreimagen2.jpg
+        const images = await uploadImages(formData.getAll("images") as File[]);
+        if (!images) {
+          throw new Error("No se pudo cargar las imagenes - Rollback");
+        }
+        await prisma.productImage.createMany({
+          data: images.map((img) => ({
+            url: img!,
+            productId: product.id,
+          })),
+        });
+      }
+      console.log({ newProduct: product });
+      return { product };
+    });
 
-    return {};
-  });
+    // TODO: Revalidate Path
+    revalidatePath(`/admin/products`);
+    revalidatePath(`/admin/products/${product.slug}`);
+    revalidatePath(`/products/${product.slug}`);
+    return {
+      ok: true,
+      product: prismaTx.product,
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      message: "Revisar los logs, no se pudo actualizar/crear",
+    };
+  }
+};
 
-  // TODO: Revalidate Path
-
-  return {
-    ok: true,
-  };
+const uploadImages = async (images: File[]) => {
+  try {
+    const uploadedPromises = images.map(async (image) => {
+      try {
+        const buffer = await image.arrayBuffer();
+        const base64Image = Buffer.from(buffer).toString("base64");
+        return cloudinary.uploader.upload(`data:image/png;base64,${base64Image}`).then((r) => r.secure_url);
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    });
+    const uploadedImages = await Promise.all(uploadedPromises);
+    return uploadedImages;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };
