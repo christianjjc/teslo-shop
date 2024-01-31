@@ -13,6 +13,7 @@ import "swiper/css/thumbs";
 
 import "./slideshow.css";
 import Image from "next/image";
+import { ProductImage } from "../product-image/ProductImage";
 
 interface Props {
   images: string[];
@@ -42,22 +43,15 @@ export const ProductSlideShow = ({ images, title, className }: Props) => {
         className="mySwiper2">
         {images.map((img) => (
           <SwiperSlide key={img}>
-            <Image width={1024} height={800} src={`/products/${img}`} alt={title} className="rounded-lg object-fill" />
+            <ProductImage width={1024} height={800} src={img} alt={title} className="rounded-lg object-fill" />
           </SwiperSlide>
         ))}
       </Swiper>
 
-      <Swiper
-        onSwiper={setThumbsSwiper}
-        spaceBetween={10}
-        slidesPerView={4}
-        freeMode={true}
-        watchSlidesProgress={true}
-        modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper">
+      <Swiper onSwiper={setThumbsSwiper} spaceBetween={10} slidesPerView={4} freeMode={true} watchSlidesProgress={true} modules={[FreeMode, Navigation, Thumbs]} className="mySwiper">
         {images.map((img) => (
           <SwiperSlide key={img}>
-            <Image width={300} height={300} src={`/products/${img}`} alt={title} className="rounded-lg object-fill" />
+            <ProductImage width={300} height={300} src={img} alt={title} className="rounded-lg object-fill" />
           </SwiperSlide>
         ))}
       </Swiper>

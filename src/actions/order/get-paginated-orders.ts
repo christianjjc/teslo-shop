@@ -3,7 +3,7 @@
 import { auth } from "@/auth.config";
 import prisma from "@/lib/prisma";
 
-export const getOrdersBySessionUser = async () => {
+export const getPaginatedOrders = async () => {
   const session = await auth();
 
   if (!session) {
@@ -13,9 +13,18 @@ export const getOrdersBySessionUser = async () => {
     };
   }
 
+  const { user } = session;
+
+  if (user.role !== "admin") {
+    return {
+      ok: false,
+      message: "Debe ser administrador.",
+    };
+  }
+
   const orders = await prisma.order.findMany({
-    where: {
-      userId: session.user.id,
+    orderBy: {
+      createdAt: "desc",
     },
     include: {
       OrderAddress: {
@@ -25,13 +34,11 @@ export const getOrdersBySessionUser = async () => {
         },
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
   });
 
   return {
     ok: true,
     orders: orders,
+    user: user,
   };
 };

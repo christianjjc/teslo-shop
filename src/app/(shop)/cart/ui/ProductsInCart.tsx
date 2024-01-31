@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useCartStore } from "@/store";
-import { QuantitySelector } from "@/components";
+import { ProductImage, QuantitySelector } from "@/components";
 import Link from "next/link";
 import { currencyFormat } from "@/utils";
 
@@ -16,7 +16,7 @@ export const ProductsInCart = () => {
   useEffect(() => {
     setLoaded(true);
     console.log(loaded);
-  }, []);
+  }, [loaded]);
 
   if (!loaded) {
     return (
@@ -45,7 +45,7 @@ export const ProductsInCart = () => {
     <>
       {productsInCart.map((prod) => (
         <div key={prod.slug + prod.size} className="flex mb-5">
-          <Image width={100} height={100} src={`/products/${prod.image}`} alt={prod.title} className="mr-5 rounded" style={{ width: "100px", height: "100px" }} />
+          <ProductImage width={100} height={100} src={prod.image} alt={prod.title} className="mr-5 rounded" style={{ width: "100px", height: "100px" }} />
           <div>
             <Link href={`/product/${prod.slug}`} className="cursor-pointer hover:underline">
               <p>{`${prod.size} - ${prod.title}`}</p>
